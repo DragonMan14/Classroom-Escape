@@ -1533,6 +1533,7 @@ SpriteAtlas:
   - {fileID: 2023582788, guid: 43277f7215dc4184481df7b0ed59f871, type: 3}
   - {fileID: -818179030, guid: 43277f7215dc4184481df7b0ed59f871, type: 3}
   - {fileID: 21300000, guid: 62b91dd29d31e644ab04b78dedae82a3, type: 3}
+  - {fileID: 21300000, guid: 136a86f3225cf2b4aa1ec8b2ab10a85f, type: 3}
   - {fileID: -527214586, guid: 3dfbd0b5621a9e14c822e8a9842009f6, type: 3}
   - {fileID: 1330315128, guid: 3dfbd0b5621a9e14c822e8a9842009f6, type: 3}
   - {fileID: 1469629196, guid: 3dfbd0b5621a9e14c822e8a9842009f6, type: 3}
@@ -5355,6 +5356,7 @@ SpriteAtlas:
   - animated_door_vertical_left_1_3
   - animated_door_vertical_left_1_2
   - Bar
+  - end_game
   - Room_Builder_Floors_16x16_11
   - Room_Builder_Floors_16x16_69
   - Room_Builder_Floors_16x16_104

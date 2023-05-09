@@ -18,6 +18,7 @@ TagManager:
   - InputField
   - InputPanel
   - GameManager
+  - GameOver
   layers:
   - Default
   - TransparentFX
