@@ -2,19 +2,20 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class InputManager : MonoBehaviour
 {
     public static InputManager Instance;
 
-    GameObject inputObject;
-    InputField inputField;
+    GameObject inputPanelObject;
+    TMP_InputField inputField;
     TextMeshProUGUI placeholder;
+    public bool inputIsActive => inputPanelObject.activeInHierarchy;
+    public bool confirmationClicked { get; private set; }
 
-    public TMP_InputValidator inputValidator;
+    public TMP_InputValidator date;
 
-    public string input { get; private set; }
+    public string Input { get; private set; }
 
     // Start is called before the first frame update
     void Awake()
@@ -27,39 +28,61 @@ public class InputManager : MonoBehaviour
         {
             Instance = this;
         }
-        inputObject = GameObject.FindGameObjectWithTag("InputField");
-        inputField = inputObject.GetComponent<InputField>();
-       // placeholder = inputObject.transform.GetChild(0).transform.GetChild(0).GetComponent<TextMeshProUGUI>();
-        placeholder = inputObject.GetComponentsInChildren<TextMeshProUGUI>()[0];
+        inputPanelObject = GameObject.FindGameObjectWithTag("InputPanel");
+        GameObject inputFieldObject = GameObject.FindGameObjectWithTag("InputField");
+        inputField = inputFieldObject.GetComponent<TMP_InputField>();
+        placeholder = inputFieldObject.GetComponentsInChildren<TextMeshProUGUI>()[0];
         
-        inputObject.SetActive(false);
+        inputPanelObject.SetActive(false);
     }
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.J))
+        if (UnityEngine.Input.GetKeyDown(KeyCode.J))
         {
             DisplayInput();
         }
-        if (Input.GetKeyDown(KeyCode.H))
+        if (UnityEngine.Input.GetKeyDown(KeyCode.H))
         {
             SetPlaceholder("Hello!");
+        }
+        if (UnityEngine.Input.GetKeyDown(KeyCode.K))
+        {
+            SetValidation("Hi");
+        }
+        if (UnityEngine.Input.GetKeyDown(KeyCode.L))
+        {
+            SetValidation("date");
         }
     }
 
     public void DisplayInput()
     {
-        inputObject.SetActive(true);
+        inputPanelObject.SetActive(true);
     }
 
     public void HideInput()
     {
-        inputObject.SetActive(false);
+        inputPanelObject.SetActive(false);
+        inputField.text = string.Empty;
     }
 
-    public void SetValidation(string filepath)
+    public void SetValidation(string validator)
     {
-        
+        switch(validator)
+        {
+            case "date":
+                inputField.inputValidator = date; 
+                break;
+            default:
+                Debug.LogError("Invalid input validator");
+                break;
+        }
+    }
+
+    public bool CheckInput(string desiredInput)
+    {
+        return Input.Equals("04/01/2023");
     }
 
     public void SetPlaceholder(string text)
@@ -67,9 +90,37 @@ public class InputManager : MonoBehaviour
         placeholder.text = text;
     }
 
+    // ReadStringInput is not to be called
+    // This is only used as a listener to save the input from the input field to the Input variable
     public void ReadStringInput(string input)
     {
-        this.input = input;
-        print($"The input is {this.input}");
+        this.Input = input;
+        print($"The input is {this.Input}");
+    }
+
+    public void ReadStringInput(TMP_InputField input)
+    {
+        this.Input = input.text;
+        print($"The input is {this.Input}");
+    }
+
+    // Not to be called
+    // Only used as a listener 
+    public void OnConfirmationClick()
+    {
+        confirmationClicked = true;
+    }
+
+    public void ResetConfirmationClick()
+    {
+        confirmationClicked = false;
+    }
+
+    public IEnumerator WaitForInput()
+    {
+        while (inputIsActive && !confirmationClicked)
+        {
+            yield return null;
+        }
     }
 }
